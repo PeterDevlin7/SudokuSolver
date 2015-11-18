@@ -1,14 +1,5 @@
 #include "sudoku.h"
 
-void sudokuSolve(SudokuBoard board);
-
-int main()
-{
-	SudokuBoard branson;
-	sudokuSolve(branson);
-	return 0;
-}
-
 void sudokuSolve(SudokuBoard board)
 {
 	// Testing functions.
@@ -18,5 +9,4 @@ void sudokuSolve(SudokuBoard board)
 	board.colHas(8, 1);
 	board.boxHas(5, 5);
 	board.isSolved();
-	board.print();
 }
