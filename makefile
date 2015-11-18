@@ -1,8 +1,8 @@
 C=g++
 CFLAGS=-std=c++11
 
-make: main.cpp sudoku.cpp sudoku.h
-	$(C) $(CFLAGS) main.cpp sudoku.cpp -o run
+make: solve.cpp sudoku.cpp sudoku.h
+	$(C) $(CFLAGS) solve.cpp sudoku.cpp -o run
 
 t: make
 	./run
