@@ -15,7 +15,7 @@ bool SudokuBoard::initFromFile(string filepath)
 		clear();
 		return false;
 	}
-	// TODO: Check if file exists.
+	
 	string rowStr;
 	int row = 0;
 	while(!in.eof() || in.peek() == EOF){
