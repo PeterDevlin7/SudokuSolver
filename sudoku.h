@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class SudokuBoard
 	public:
 		SudokuBoard();
 		bool initFromFile(string filepath);
+		void clear();
 		int setSqr(int row, int col, int x);
 		bool rowHas(int row, int x);
 		bool colHas(int col, int x);

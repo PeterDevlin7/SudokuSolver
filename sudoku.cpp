@@ -5,43 +5,79 @@ SudokuBoard::SudokuBoard()
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++)
 			grid[i][j] = 0;
-
-	cout << "Board initialized.\n";
 }
 
 bool SudokuBoard::initFromFile(string filepath)
 {
-	cout << "initFromFile( filepath=" << filepath << " )\n";
+	ifstream in(filepath);
+	if(!in.good()){
+		cout << "[ERROR] " << filepath << ": Does not exist\n";
+		clear();
+		return false;
+	}
+	// TODO: Check if file exists.
+	string rowStr;
+	int row = 0;
+	while(!in.eof() || in.peek() == EOF){
+		in >> rowStr;
+		row++;
+		if(rowStr.length() != 9){
+			cout << "[ERROR] " << filepath << ":" << row << ": Invalid line length\n";
+			clear();
+			return false;
+		}
+		for(int i = 1; i <= 9; i++){
+			int x = rowStr[i-1]-'0';
+			if(x < 0 || x > 9){
+				cout << "[ERROR] " << filepath << ":" << row << ":" << i << ": Invalid character '" << rowStr[i-1] << "'\n";
+				clear();
+				return false;
+			}
+			setSqr(row, i, x);
+		}
+		if(in.eof() || in.peek() == EOF)
+			break;
+	}
+	in.close();
+	
 	return true;
+}
+
+void SudokuBoard::clear()
+{
+	for(int i = 0; i < 9; i++)
+		for(int j = 0; j < 9; j++)
+			grid[i][j] = 0;
+	cout << "[NOTE] Board cleared\n";
 }
 
 int SudokuBoard::setSqr(int row, int col, int x)
 {
-	cout << "setSqr( row=" << row << ", col=" << col << ", x=" << x << " )\n";
+	grid[row-1][col-1] = x;
 	return 0;
 }
 
 bool SudokuBoard::rowHas(int row, int x)
 {
-	cout << "rowHas( row=" << row << ", x=" << x << " )\n";
+	cout << "[TODO] rowHas\n";
 	return true;
 }
 
 bool SudokuBoard::colHas(int col, int x)
 {
-	cout << "colHas( col=" << col << ", x=" << x << " )\n";
+	cout << "[TODO] colHas\n";
 	return true;
 }
 
 bool SudokuBoard::boxHas(int box, int x)
 {
-	cout << "boxHas( box=" << box << ", x=" << x << " )\n";
+	cout << "[TODO] boxHas\n";
 	return true;
 }
 
 bool SudokuBoard::isSolved()
 {
-	cout << "isSolved()\n";
+	cout << "[TODO] isSolved\n";
 	return true;
 }
 
