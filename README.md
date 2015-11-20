@@ -4,11 +4,9 @@ Final Project for CS 375
 // Constructs a SudokuBoard and sets its contents to 0
 ## SudokuBoard Class
 
-// 
-// 
 #### initFromFile
-  Initializes a SudokuBoard from an input file
-  @param filepath: the path to the input file
+  *Initializes a SudokuBoard from an input file.*
+  **@param** filepath: the path to the input file
 #### clearBoard
 
 #### setSqr
