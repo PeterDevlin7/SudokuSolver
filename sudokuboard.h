@@ -12,7 +12,7 @@ class SudokuBoard
 	public:
 		SudokuBoard();
 		bool initFromFile(string filepath);
-		void clearBoard(int note);
+		void clearBoard();
 		bool setSqr(int row, int col, int x);
 		int getSqr(int row, int col);
 		void clearSqr(int row, int col);

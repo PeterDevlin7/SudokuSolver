@@ -1,13 +1,10 @@
 #include "sudokuboard.h"
 
-// Constructs a SudokuBoard and sets its contents to 0
 SudokuBoard::SudokuBoard()
 {
 	clearBoard(0);
 }
 
-// Initializes a SudokuBoard from an input file
-// @param filepath: the path to the input file
 bool SudokuBoard::initFromFile(string filepath)
 {
 	ifstream in(filepath);
@@ -44,13 +41,11 @@ bool SudokuBoard::initFromFile(string filepath)
 	return true;
 }
 
-void SudokuBoard::clearBoard(int note)
+void SudokuBoard::clearBoard()
 {
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++)
 			grid[i][j] = 0;
-	if(note)
-		cout << "[NOTE] Board cleared\n";
 }
 
 bool SudokuBoard::setSqr(int row, int col, int x)
