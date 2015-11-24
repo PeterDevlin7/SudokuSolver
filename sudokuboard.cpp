@@ -2,39 +2,42 @@
 
 SudokuBoard::SudokuBoard()
 {
-	clearBoard(0);
+	clearBoard();
 }
 
 bool SudokuBoard::initFromFile(string filepath)
 {
+  clearBoard();
 	ifstream in(filepath);
 	if(!in.good()){
 		cout << "[ERROR] initFromFile: " << filepath << " does not exist\n";
-		clearBoard(1);
+		clearBoard();
 		return false;
 	}
 	
 	string rowStr;
-	int row = 0;
-	while(!in.eof() || in.peek() == EOF){
+	int row = 1;
+	while(!in.eof()){
 		in >> rowStr;
-		row++;
 		if(rowStr.length() != 9){
 			cout << "[ERROR] initFromFile: " << filepath << ":" << row << ": Invalid line length\n";
-			clearBoard(1);
+			clearBoard();
 			return false;
 		}
 		for(int i = 1; i <= 9; i++){
 			int x = rowStr[i-1]-'0';
 			if(x < 0 || x > 9){
 				cout << "[ERROR] initFromFile: " << filepath << ":" << row << ":" << i << ": Invalid character '" << rowStr[i-1] << "'\n";
-				clearBoard(1);
+				clearBoard();
 				return false;
 			}
-			setSqr(row, i, x);
+			if(x > 0)
+			{
+				if(!setSqr(row, i, x)) return false;
+			}
 		}
-		if(in.eof() || in.peek() == EOF)
-			break;
+		row++;
+		if(row >= 10) break;
 	}
 	in.close();
 	
@@ -45,7 +48,11 @@ void SudokuBoard::clearBoard()
 {
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++)
-			grid[i][j] = 0;
+		{
+			Square s; s.value = 0;
+			for(int k = 0; k < 9; k++) s.possibilities[k] = 1;
+			grid[i][j] = s;
+		}
 }
 
 bool SudokuBoard::setSqr(int row, int col, int x)
@@ -54,24 +61,65 @@ bool SudokuBoard::setSqr(int row, int col, int x)
 		cout << "[ERROR] setSqr: (" << row << ", " << col << ") not updated: Invalid value '" << x << "'\n";
 		return false;
 	}
-	grid[row-1][col-1] = x;
+  if(row < 1 || row > 9){
+		cout << "[ERROR] setSqr: (" << row << ", " << col << ") not updated: Invalid row '" << row << "' and value '" << x << "'\n";
+		return false;
+	}
+  if(col < 1 || col > 9){
+		cout << "[ERROR] setSqr: (" << row << ", " << col << ") not updated: Invalid column '" << col << "'\n";
+		return false;
+	}
+	grid[row-1][col-1].value = x;
+	if(x == 0)
+	{
+		for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 1;
+	}
+	else
+	{
+    for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 0;
+		grid[row-1][col-1].possibilities[x-1] = 1;
+		//cout << "[SUCCESS] setSqr: (" << row << ", " << col << ") updated to value '" << x << "'\n";
+	}
 	return true;
 }
 
-int SudokuBoard::getSqr(int row, int col)
+Square SudokuBoard::getSqr(int row, int col)
 {
+  if(row < 1 || row > 9){
+		cout << "[ERROR] getSqr: (" << row << ", " << col << ") not updated: Invalid row '" << row << "'\n";
+    Square dummy; dummy.value = -1;
+		return dummy;
+	}
+  if(col < 1 || col > 9){
+		cout << "[ERROR] getSqr: (" << row << ", " << col << ") not updated: Invalid column '" << col << "'\n";
+    Square dummy; dummy.value = -1;
+		return dummy;
+	}
 	return grid[row-1][col-1];
 }
 
 void SudokuBoard::clearSqr(int row, int col)
 {
-	grid[row-1][col-1] = 0;
+  if(row < 1 || row > 9){
+		cout << "[ERROR] clearSqr: (" << row << ", " << col << ") not updated: Invalid row '" << row << "'\n";
+		return;
+	}
+  if(col < 1 || col > 9){
+		cout << "[ERROR] clearSqr: (" << row << ", " << col << ") not updated: Invalid column '" << col << "'\n";
+		return;
+	}
+	grid[row-1][col-1].value = 0;
+	for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 1;
 }
 
 bool SudokuBoard::rowHas(int row, int x)
 {
+  if(row < 1 || row > 9){
+		cout << "[ERROR] rowHas: " << row << ". Invalid row '" << row << "'\n";
+		return false;
+	}
 	for(int i = 0; i < 9; i++){
-		if (grid[row-1][i] == x)
+		if (grid[row-1][i].value == x)
 			return true;
 	}
 	return false;
@@ -79,8 +127,12 @@ bool SudokuBoard::rowHas(int row, int x)
 
 bool SudokuBoard::colHas(int col, int x)
 {
+  if(col < 1 || col > 9){
+		cout << "[ERROR] colHas: " << col << ". Invalid column '" << col << "'\n";
+		return false;
+	}
 	for(int i = 0; i < 9; i++){
-		if (grid[i][col-1] == x)
+		if (grid[i][col-1].value == x)
 			return true;
 	}
 	return false;
@@ -133,7 +185,7 @@ bool SudokuBoard::boxHas(int bRow, int bCol, int x)
 
 	for(int i = 0; i < 3; i++){
 		for(int j = 0; j < 3; j++){
-			if (grid[rows[i]][cols[j]] == x)
+			if (grid[rows[i]-1][cols[j]-1].value == x)
 			return true;
 		}
 	}
@@ -142,8 +194,12 @@ bool SudokuBoard::boxHas(int bRow, int bCol, int x)
 
 bool SudokuBoard::isSolved()
 {
-	cout << "[TODO] isSolved\n";
-	return false;
+	for(int i = 0; i < 9; i++)
+		for(int j = 0; j < 9; j++)
+		{
+			if(grid[i][j].value == 0) return false;
+		}
+    return true; //Can be more thorough, although I have faith the algorithm will stop when it's solved.
 }
 
 void SudokuBoard::print()
@@ -154,10 +210,10 @@ void SudokuBoard::print()
 		cout << "# ";
 
 		for(int j = 0; j < 9; j++){
-			if(grid[i][j] == 0)
+			if(grid[i][j].value == 0)
 				cout << " ";
 			else
-				cout << grid[i][j];
+				cout << grid[i][j].value;
 
 			if((j+1) % 3 == 0)
 				cout << " # ";

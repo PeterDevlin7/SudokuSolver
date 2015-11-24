@@ -7,6 +7,12 @@
 
 using namespace std;
 
+struct Square
+{
+  int value;
+  int possibilities[9];
+};
+
 class SudokuBoard
 {
 	public:
@@ -14,7 +20,7 @@ class SudokuBoard
 		bool initFromFile(string filepath);
 		void clearBoard();
 		bool setSqr(int row, int col, int x);
-		int getSqr(int row, int col);
+		Square getSqr(int row, int col);
 		void clearSqr(int row, int col);
 		bool rowHas(int row, int x);
 		bool colHas(int col, int x);
@@ -22,7 +28,7 @@ class SudokuBoard
 		bool isSolved();
 		void print();
 	private:
-		int grid[9][9];
+		Square grid[9][9];
 };
 
 #endif
