@@ -1,4 +1,5 @@
-#include "sudokuboard.h"
+#include "sudoku_board.h"
+#include "sudoku_square.h"
 
 void sudokuSolve(SudokuBoard board);
 void testBoard(SudokuBoard board);
@@ -13,15 +14,13 @@ int main(int argc, char* argv[])
 	SudokuBoard branson;
 	if(branson.initFromFile(argv[1]))
 	{
-		//testBoard(branson);
-  	sudokuSolve(branson);
+		testBoard(branson);
+		//sudokuSolve(branson);
 		return 0;
 	}
 	else return -1;
 }
-
-// Solves a sudoku puzzle.
-// @param board: the SudokuBoard to solve
+/*
 void sudokuSolve(SudokuBoard board)
 {
   for(int i = 1; i <= 9; i++)
@@ -221,9 +220,8 @@ void sudokuSolve(SudokuBoard board)
 	if(!board.isSolved()) sudokuSolve(board);
 	board.print();
 }
+*/
 
-// Tests SudokuBoard methods.
-// @param board: the SudokuBoard to test
 void testBoard(SudokuBoard board)
 {
 	cout << "\n:::: TESTING SUDOKUBOARD METHODS ::::\n";
@@ -233,8 +231,7 @@ void testBoard(SudokuBoard board)
 	}
 	
 	cout << "\n:: clearSqr ::\n";
-	board.clearSqr(5, 2);
-	board.clearSqr(5, 2);
+	board.clearSqr(4, 2);
 	
 	cout << "\n:: rowHas ::\n";
 	if(board.rowHas(5, 7))
