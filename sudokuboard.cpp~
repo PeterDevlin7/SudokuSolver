@@ -79,7 +79,7 @@ bool SudokuBoard::setSqr(int row, int col, int x)
 	{
     grid[row-1][col-1].possibilities = 1;
     grid[row-1][col-1].bits = (1 << (x-1));
-		//cout << "[SUCCESS] setSqr: (" << row << ", " << col << ") updated to value '" << x << "'\n";
+		cout << "[SUCCESS] setSqr: (" << row << ", " << col << ") updated to value '" << x << "'\n";
 	}
 	return true;
 }

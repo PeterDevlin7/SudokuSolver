@@ -1,7 +1,7 @@
 #include "sudokuboard.h"
 
 void sudokuSolveWrapper(SudokuBoard board);
-SudokuBoard sudokuSolve(SudokuBoard board, char p);
+void sudokuSolve(SudokuBoard board, char p);
 void testBoard(SudokuBoard board);
 
 int main(int argc, char* argv[])
@@ -28,8 +28,9 @@ void sudokuSolveWrapper(SudokuBoard board)
 	char p = 0;
 	while(!board.isSolved())
 	{
-		board = sudokuSolve(board, p);
+		sudokuSolve(board, p);
 		p ^= 1;
+		board.print();
 	}
 	board.print();
 }
@@ -37,7 +38,7 @@ void sudokuSolveWrapper(SudokuBoard board)
 // Solves a sudoku puzzle.
 // @param board: the SudokuBoard to solve
 // @param p: a simple bit that keeps flipping to switch algorithms so they work in tandem
-SudokuBoard sudokuSolve(SudokuBoard board, char p)
+void sudokuSolve(SudokuBoard board, char p)
 {
   if(p == 0) //Place finding method
 	{
@@ -171,7 +172,6 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 			}
 		}
 	}
-	return board;
 }
 
 // Tests SudokuBoard methods.
