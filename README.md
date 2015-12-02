@@ -44,3 +44,8 @@ Final Project for CS 375
 *@returns* `true` if the board is solved, and `false` if not
 
 **print:** Prints the board layout and contents<br/>
+
+**removeGuess:** Removes a certain value, if present, from a cell's list of possible values<br/>
+*@param* _**row:**_ the row of the target square<br/>
+*@param* _**col:**_ the column of the target square<br/>
+*@param* _**guess:_ the value to be removed if present in the list<br/>
