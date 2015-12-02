@@ -16,24 +16,34 @@ int SudokuSquare::value()
 	return this->val;
 }
 
-void SudokuSquare::addPossible(int n)
+void SudokuSquare::addGuess(int n)
 {
-	this->possible[n-1] = true;
+	this->guess[n-1] = true;
 }
 
-void SudokuSquare::delPossible(int n)
+void SudokuSquare::delGuess(int n)
 {
-	this->possible[n-1] = false;
+	this->guess[n-1] = false;
 }
 
-bool SudokuSquare::isPossible(int n)
+bool SudokuSquare::isGuess(int n)
 {
-	return this->possible[n-1];
+	return this->guess[n-1];
 }
+
+int SudokuSquare::numGuesses()
+{
+	int num = 0;
+	for(int i = 0; i < 9; i++){
+		if(this->guess[i]) num++;
+	}
+	return num;
+}
+
 
 void SudokuSquare::clear()
 {
 	for(int i = 0; i < 9; i++)
-		this->possible[i] = true;
+		this->guess[i] = true;
 	this->val = 0;
 }

@@ -13,13 +13,14 @@ class SudokuSquare
 		SudokuSquare(int val = 0);
 		void set(int n);
 		int value();
-		void addPossible(int n);
-		void delPossible(int n);
-		bool isPossible(int n);
+		void addGuess(int n);
+		void delGuess(int n);
+		bool isGuess(int n);
+		int numGuesses();
 		void clear();
 	private:
 		int val;
-		bool possible[9];
+		bool guess[9];
 };
 
 #endif
