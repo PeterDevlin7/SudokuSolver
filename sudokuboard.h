@@ -10,7 +10,8 @@ using namespace std;
 struct Square
 {
   int value;
-  int possibilities[9];
+  int possibilities;
+  int bits;
 };
 
 class SudokuBoard
@@ -27,6 +28,7 @@ class SudokuBoard
 		bool boxHas(int bRow, int bCol, int x);
 		bool isSolved();
 		void print();
+		void removeGuess(int row, int col, int guess);
 	private:
 		Square grid[9][9];
 };

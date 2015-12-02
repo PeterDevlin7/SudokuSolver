@@ -40,7 +40,6 @@ bool SudokuBoard::initFromFile(string filepath)
 		if(row >= 10) break;
 	}
 	in.close();
-	
 	return true;
 }
 
@@ -50,7 +49,8 @@ void SudokuBoard::clearBoard()
 		for(int j = 0; j < 9; j++)
 		{
 			Square s; s.value = 0;
-			for(int k = 0; k < 9; k++) s.possibilities[k] = 1;
+			s.possibilities = 9;
+			s.bits = (1 << 9) - 1; //Should be 111111111 in binary
 			grid[i][j] = s;
 		}
 }
@@ -72,12 +72,13 @@ bool SudokuBoard::setSqr(int row, int col, int x)
 	grid[row-1][col-1].value = x;
 	if(x == 0)
 	{
-		for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 1;
+		grid[row-1][col-1].possibilities = 9;
+		grid[row-1][col-1].bits = (1 << 9) - 1;
 	}
 	else
 	{
-    for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 0;
-		grid[row-1][col-1].possibilities[x-1] = 1;
+    grid[row-1][col-1].possibilities = 1;
+    grid[row-1][col-1].bits = (1 << (x-1));
 		//cout << "[SUCCESS] setSqr: (" << row << ", " << col << ") updated to value '" << x << "'\n";
 	}
 	return true;
@@ -109,7 +110,8 @@ void SudokuBoard::clearSqr(int row, int col)
 		return;
 	}
 	grid[row-1][col-1].value = 0;
-	for(int k = 0; k < 9; k++) grid[row-1][col-1].possibilities[k] = 1;
+	grid[row-1][col-1].possibilities = 9;
+	grid[row-1][col-1].bits = (1 << 9) - 1;
 }
 
 bool SudokuBoard::rowHas(int row, int x)
@@ -225,5 +227,14 @@ void SudokuBoard::print()
 				cout << "\n#####################################\n";
 			else
 				cout << "\n#-----------#-----------#-----------#\n";
+	}
+}
+
+void SudokuBoard::removeGuess(int row, int col, int guess)
+{
+	if(grid[row][col].bits & (1 << (guess - 1)) != 0)
+	{
+		grid[row][col].bits &= ~(1 << (guess - 1));
+		grid[row][col].possibilities--;
 	}
 }
