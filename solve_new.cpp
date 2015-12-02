@@ -1,8 +1,7 @@
 #include "sudoku_board.h"
 #include "sudoku_square.h"
 
-void sudokuSolveWrapper(SudokuBoard board);
-SudokuBoard sudokuSolve(SudokuBoard board, char p);
+SudokuBoard sudokuSolve(SudokuBoard board);
 void testBoard(SudokuBoard board);
 
 int main(int argc, char* argv[])
@@ -16,38 +15,25 @@ int main(int argc, char* argv[])
 	if(branson.initFromFile(argv[1]))
 	{
 		//testBoard(branson);
-		sudokuSolveWrapper(branson);
+		branson = sudokuSolve(branson);
+		branson.print();
 		return 0;
 	}
 	else return -1;
 }
 
-// Wrapper for algorithm to cut down on stack size
-// @param board: the SudokuBoard object to pass on
-void sudokuSolveWrapper(SudokuBoard board)
-{
-	char p = 0;
-	while(!board.isSolved())
-	{
-		board = sudokuSolve(board, p);
-		p ^= 1;
-	}
-	board.print();
-}
-
 // Solves a sudoku puzzle.
 // @param board: the SudokuBoard to solve
 // @param p: a simple bit that keeps flipping to switch algorithms so they work in tandem
-SudokuBoard sudokuSolve(SudokuBoard board, char p)
+SudokuBoard sudokuSolve(SudokuBoard board)
 {
-  if(p == 0) //Place finding method
-	{
+	while(!board.isSolved()){
 		//Start with columns
 		for(int column = 1; column <= 9; column++)
 		{
 			for(int guess = 1; guess <= 9; guess++)
 			{
-				if(board.colHas(column, guess)) //Go through each square in the column and eliminate guess from bits / decrement # possibilities
+				if(board.colHas(column, guess)) //Go through each square in the column and eliminate guesses
 				{
 					for(int row = 1; row <= 9; row++)
 					{
@@ -62,7 +48,7 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 					int count = 0; int index = -1;
 					for(int row = 1; row <= 9; row++)
 					{
-						if(board.getSqr(row, column).value() == 0 && ((board.getSqr(row, column).bits >> (guess - 1)) & 1))
+						if(board.getSqr(row, column).value() == 0 && board.getSqr(row, column).isGuess(guess))
 						{
 							if(!board.rowHas(row, guess) && !board.boxHas((row+2)/3, (column+2)/3, guess))
 							{
@@ -80,7 +66,7 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 		{
 			for(int guess = 1; guess <= 9; guess++)
 			{
-				if(board.rowHas(row, guess)) //Go through each square in the row and eliminate guess from bits / decrement # possibilities
+				if(board.rowHas(row, guess)) //Go through each square in the row and eliminate guesses
 				{
 					for(int column = 1; column <= 9; column++)
 					{
@@ -95,7 +81,7 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 					int count = 0; int index = -1;
 					for(int column = 1; column <= 9; column++)
 					{
-						if(board.getSqr(row, column).value() == 0 && ((board.getSqr(row, column).bits >> (guess - 1)) & 1))
+						if(board.getSqr(row, column).value() == 0 && board.getSqr(row, column).isGuess(guess))
 						{
 							if(!board.colHas(column, guess) && !board.boxHas((row+2)/3, (column+2)/3, guess))
 							{
@@ -115,7 +101,7 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 			{
 				for(int guess = 1; guess <= 9; guess++)
 				{
-					if(board.boxHas(boxRow, boxCol, guess)) //Go through each square in the box and eliminate guess from bits / decrement # possibilities
+					if(board.boxHas(boxRow, boxCol, guess)) //Go through each square in the box and eliminate guesses
 					{
 						for(int row = boxRow*3 - 2; row <= boxRow*3; row++)
 						{
@@ -135,7 +121,7 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 						{
 							for(int column = boxCol*3 - 2; column <= boxCol*3; column++)
 							{
-								if(board.getSqr(row, column).value() == 0 && ((board.getSqr(row, column).bits >> (guess - 1)) & 1))
+								if(board.getSqr(row, column).value() == 0 && board.getSqr(row, column).isGuess(guess))
 								{
 									if(!board.rowHas(row, guess) && !board.colHas(column, guess))
 									{
@@ -151,18 +137,16 @@ SudokuBoard sudokuSolve(SudokuBoard board, char p)
 				}
 			}
 		}
-	}
-	else //Candidate checking method
-	{
+
 		for(int row = 1; row <= 9; row++)
 		{
 			for(int column = 1; column <= 9; column++)
 			{
-				if(board.getSqr(row, column).value() == 0 && board.getSqr(row, column).numGuesses() == 1) //Fill in the square if it only has one possibility
+				if(board.getSqr(row, column).value() == 0 && board.getSqr(row, column).numGuesses() == 1)
 				{
 					for(int i = 1; i <= 9; i++)
 					{
-						if(board.getSqr(row, column).bits ^ (1 << (i - 1)) == 0)
+						if(board.getSqr(row, column).isGuess(i) == true)
 						{
 							board.setSqr(row, column, i);
 							break;
