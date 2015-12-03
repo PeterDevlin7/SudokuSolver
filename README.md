@@ -20,10 +20,6 @@ Final Project for CS 375
 *@param* _**col:**_ the column the target square is in<br/>
 *@returns* the value in the target square
 
-**clearSqr:** Clears a single square's value<br/>
-*@param* _**row:**_ the row the target square is in<br/>
-*@param* _**col:**_ the column the target square is in
-
 **rowHas:** Checks if a row contains a value<br/>
 *@param* _**row:**_ the row to search<br/>
 *@param* _**x:**_ the value to search for<br/>
