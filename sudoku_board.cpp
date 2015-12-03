@@ -66,15 +66,6 @@ bool SudokuBoard::setSqr(int row, int col, int n)
 	}
 
 	this->grid[row-1][col-1].set(n);
-	/*
-	if(n == 0){
-		for(int k = 0; k < 9; k++)
-			this->grid[row-1][col-1].addGuess(k);
-	}else{
-		for(int k = 0; k < 9; k++)
-			this->grid[row-1][col-1].delGuess(k);
-		this->grid[row-1][col-1].addGuess(n-1);
-	}*/
 	
 	return true;
 }

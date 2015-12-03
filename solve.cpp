@@ -19,7 +19,10 @@ int main(int argc, char* argv[])
 	if(branson.initFromFile(argv[1]))
 	{
 		//testBoard(branson);
+		cout << "\n  ============== INITIAL ==============\n";
+		branson.print();
 		branson = sudokuSolve(branson);
+		cout << "\n  ============== SOLVED! ==============\n";
 		branson.print();
 		return 0;
 	}
@@ -31,6 +34,7 @@ int main(int argc, char* argv[])
 // @param p: a simple bit that keeps flipping to switch algorithms so they work in tandem
 SudokuBoard sudokuSolve(SudokuBoard board)
 {
+	cout << "\n\nSolving...\n\n";
 	while(!board.isSolved()){
 		//Start with columns
 		for(int column = 1; column <= 9; column++)
