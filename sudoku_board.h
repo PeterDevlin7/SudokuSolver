@@ -17,7 +17,6 @@ class SudokuBoard
 		void clearBoard();
 		bool setSqr(int row, int col, int n);
 		SudokuSquare getSqr(int row, int col);
-		void clearSqr(int row, int col);
 		bool rowHas(int row, int n);
 		bool colHas(int col, int n);
 		bool boxHas(int bRow, int bCol, int n);

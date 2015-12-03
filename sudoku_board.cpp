@@ -166,13 +166,25 @@ bool SudokuBoard::boxHas(int bRow, int bCol, int n)
 
 bool SudokuBoard::isSolved()
 {
-	for(int i = 0; i < 9; i++){
-		for(int j = 0; j < 9; j++){
-			if(this->grid[i][j].value() == 0) return false;
+	for(int i = 1; i <= 9; i++){
+		for(int j = 1; j <= 9; j++){
+			if(!this->rowHas(i, j)) return false;
 		}
 	}
-    return true; // Can be more thorough, although I have faith the algorithm will stop when it's solved.
-}				 // I agree. It shouldn't be hard to make it better. I'll do that.
+	for(int i = 1; i <= 9; i++){
+		for(int j = 1; j <= 9; j++){
+			if(!this->colHas(i, j)) return false;
+		}
+	}
+	for(int i = 1; i <= 3; i++){
+		for(int j = 1; j <= 3; j++){
+			for(int k = 1; k <= 9; k++){
+				if(!this->boxHas(i, j, k)) return false;
+			}
+		}
+	}
+    return true;
+}
 
 void SudokuBoard::print()
 {
