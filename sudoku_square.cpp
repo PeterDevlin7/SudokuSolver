@@ -1,9 +1,8 @@
 #include "sudoku_square.h"
 
-SudokuSquare::SudokuSquare(int val)
+SudokuSquare::SudokuSquare()
 {
 	this->clear();
-	this->val = val;
 }
 
 void SudokuSquare::set(int n)
@@ -13,6 +12,7 @@ void SudokuSquare::set(int n)
 
 int SudokuSquare::value()
 {
+	//cout << this->val << " ";
 	return this->val;
 }
 
@@ -39,7 +39,6 @@ int SudokuSquare::numGuesses()
 	}
 	return num;
 }
-
 
 void SudokuSquare::clear()
 {

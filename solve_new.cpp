@@ -10,7 +10,11 @@ int main(int argc, char* argv[])
 		cout << "[ERROR] Invalid argument(s)\n[NOTE] Usage: run <filepath>\n";
 		return -1;
 	}
-	
+	/*
+	SudokuBoard test;
+	test.initFromFile(argv[1]);
+	test.print();*/
+
 	SudokuBoard branson;
 	if(branson.initFromFile(argv[1]))
 	{
@@ -168,10 +172,6 @@ void testBoard(SudokuBoard board)
 	for(int i = -1; i < 11; i++){
 		board.setSqr(i, 2, 7);
 	}
-	
-	cout << "\n:: clearSqr ::\n";
-	board.clearSqr(5, 2);
-	board.clearSqr(5, 2);
 	
 	cout << "\n:: rowHas ::\n";
 	if(board.rowHas(5, 7))

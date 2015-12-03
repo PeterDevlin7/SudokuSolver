@@ -10,7 +10,7 @@ using namespace std;
 class SudokuSquare
 {
 	public:
-		SudokuSquare(int val = 0);
+		SudokuSquare();
 		void set(int n);
 		int value();
 		void addGuess(int n);
