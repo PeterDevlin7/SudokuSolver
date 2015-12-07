@@ -40,3 +40,26 @@ Final Project for CS 375
 *@returns* `true` if the board is solved, and `false` if not
 
 **print:** Prints the board layout and contents<br/>
+
+### SudokuSquare Class
+
+**set:** Initializes the board from an input file<br/>
+*@param* _**n:**_ the value to set the square to<br/>
+
+**value:** Gets the value of the square
+*@returns* The current value of the square
+
+**addGuess:** Adds a value to the `guess` list<br/>
+*@param* _**n:**_ the guess value to add<br/>
+
+**delGuess:** Removes a value from the `guess` list<br/>
+*@param* _**n:**_ the guess value to delete<br/>
+
+**isGuess:** Checks if a square has a certain guess<br/>
+*@param* _**n:**_ the value of the guess<br/>
+*@returns* `true` if the guess is set for the square, and `false` if not
+
+**numGuesses:** Checks if a column contains a value<br/>
+*@returns* the number of guesses currently set
+
+**clear:** Clears the square, setting `val` to 0 and all guesses to `true`<br/>
