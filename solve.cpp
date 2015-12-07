@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
 
 // Solves a sudoku puzzle.
 // @param board: the SudokuBoard to solve
-// @param p: a simple bit that keeps flipping to switch algorithms so they work in tandem
 SudokuBoard sudokuSolve(SudokuBoard board)
 {
 	cout << "\n\nSolving...\n\n";
