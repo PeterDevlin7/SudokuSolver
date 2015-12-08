@@ -29,7 +29,14 @@ int main(int argc, char* argv[])
 		cout << "\n  ============== INITIAL ==============\n";
 		branson.print();
 		branson = sudokuSolve(branson);
-		cout << "\n  ============== SOLVED! ==============\n";
+		if(branson.isSolved())
+		{
+			cout << "\n  ============== SOLVED! ==============\n";
+		}
+		else
+		{
+			cout << "\n  ============== FAILED! ==============\n";
+		}
 		branson.print();
 		return 0;
 	}
@@ -40,8 +47,11 @@ int main(int argc, char* argv[])
 // @param board: the SudokuBoard to solve
 SudokuBoard sudokuSolve(SudokuBoard board)
 {
+  bool progress;
 	cout << "\n\nSolving...\n\n";
-	while(!board.isSolved()){
+	while(!board.isSolved())
+	{
+		progress = false;
 		//Start with columns
 		for(int column = 1; column <= 9; column++)
 		{
@@ -71,7 +81,11 @@ SudokuBoard sudokuSolve(SudokuBoard board)
 							}
 						}
 					}
-					if(count == 1) board.setSqr(index, column, guess);
+					if(count == 1)
+					{
+						board.setSqr(index, column, guess);
+						progress = true;
+					}
 				}
 			}
 		}
@@ -104,7 +118,11 @@ SudokuBoard sudokuSolve(SudokuBoard board)
 							}
 						}
 					}
-					if(count == 1) board.setSqr(row, index, guess);
+					if(count == 1)
+					{
+						board.setSqr(row, index, guess);
+						progress = true;
+					}
 				}
 			}
 		}
@@ -146,12 +164,16 @@ SudokuBoard sudokuSolve(SudokuBoard board)
 								}
 							}
 						}
-						if(count == 1) board.setSqr(rIndex, cIndex, guess);
+						if(count == 1)
+						{
+							board.setSqr(rIndex, cIndex, guess);
+							progress = true;
+						}
 					}
 				}
 			}
 		}
-
+		//Candidate-Checking method
 		for(int row = 1; row <= 9; row++)
 		{
 			for(int column = 1; column <= 9; column++)
@@ -160,14 +182,20 @@ SudokuBoard sudokuSolve(SudokuBoard board)
 				{
 					for(int i = 1; i <= 9; i++)
 					{
-						if(board.getSqr(row, column).isGuess(i) == true)
+						if(board.getSqr(row, column).isGuess(i))
 						{
 							board.setSqr(row, column, i);
+							progress = true;
 							break;
 						}
 					}
 				}
 			}
+		}
+		if(!progress)
+		{
+			cout << "Could not solve this puzzle; need more layers of heuristics.\n";
+			break;
 		}
 	}
 	return board;
